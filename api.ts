@@ -26,7 +26,9 @@ app.post('/get_stream_url', async (req, res) => {
 		const { stdout } = await execPromise(`yt-dlp -j "${KickBaseURL}/${channel}"`);
 		const info = JSON.parse(stdout);
 
-		res.json({ stream_url: info.url });
+		const formats = info.formats.map(((f: any) => ({url: f.url, height: f.height})));
+
+		res.json({ formats });
 	} catch (err: any) {
 		res.status(500).json({ error: err.stderr || err.message });
 	}
