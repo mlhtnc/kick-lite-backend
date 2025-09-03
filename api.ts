@@ -50,9 +50,6 @@ app.post('/get_subscribes', async (req, res) => {
 			},
 		});
 
-		const text = await response.text();
-		console.log(text);
-
 		if (!response.ok) {
 			throw new Error();
 		}
