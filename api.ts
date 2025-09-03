@@ -35,6 +35,33 @@ app.post('/get_stream_url', async (req, res) => {
 	}
 });
 
+app.post('/get_subscribes', async (req, res) => {
+	const { accessToken } = req.body;
+	if (!accessToken) {
+		return res.status(400).json({ error: 'Access token is missing' });
+	}
+	
+	try {
+		const response = await fetch(KickEventSubscription, {
+			method: 'POST',
+			headers: {
+				"Authorization": `Bearer ${accessToken}`,
+			},
+		});
+
+		console.log(response);
+
+		if (!response.ok) {
+			throw new Error();
+		}
+
+		return response.json();
+	} catch (err: any) {
+		console.log(err);
+		res.status(500).json({ error: err.stderr || err.message });
+	}
+});
+
 app.post('/subscribe_chat', async (req, res) => {
 	const { userId, accessToken } = req.body;
 	if (!userId || !accessToken) {
@@ -60,6 +87,65 @@ app.post('/subscribe_chat', async (req, res) => {
 				"Content-Type": "application/json"
 			},
 			body: JSON.stringify(data),
+		});
+
+		console.log(response)
+
+		if (!response.ok) {
+			throw new Error();
+		}
+
+		return response.json();
+	} catch (err: any) {
+		console.log(err);
+		res.status(500).json({ error: err.stderr || err.message });
+	}
+});
+
+app.get('/get_subscribes', async (req, res) => {
+	const { accessToken } = req.body;
+	if (!accessToken) {
+		return res.status(400).json({ error: 'Access token is missing' });
+	}
+	
+	try {
+		const response = await fetch(KickEventSubscription, {
+			method: 'GET',
+			headers: {
+				"Authorization": `Bearer ${accessToken}`,
+			},
+		});
+
+		console.log(response);
+
+		if (!response.ok) {
+			throw new Error();
+		}
+
+		return response.json();
+	} catch (err: any) {
+		console.log(err);
+		res.status(500).json({ error: err.stderr || err.message });
+	}
+});
+
+app.post('/delete_subscribe', async (req, res) => {
+	const { id, accessToken } = req.body;
+	if (!id || !accessToken) {
+		return res.status(400).json({ error: 'Id or access token is missing' });
+	}
+
+	const params = new URLSearchParams();
+	params.append("id", id);
+
+
+	try {
+		const response = await fetch(`${KickEventSubscription}?${params.toString()}`, {
+			method: 'DELETE',
+			headers: {
+				"Authorization": `Bearer ${accessToken}`,
+				"Accept": "*/*"
+			},
 		});
 
 		console.log(response)
