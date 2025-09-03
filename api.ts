@@ -102,7 +102,7 @@ app.post('/subscribe_chat', async (req, res) => {
 	}
 });
 
-app.get('/get_subscribes', async (req, res) => {
+app.post('/get_subscribes', async (req, res) => {
 	const { accessToken } = req.body;
 	if (!accessToken) {
 		return res.status(400).json({ error: 'Access token is missing' });
