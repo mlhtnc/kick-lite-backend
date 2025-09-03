@@ -68,6 +68,7 @@ app.post('/subscribe_chat', async (req, res) => {
 
 		return response.json();
 	} catch (err: any) {
+		console.log(err);
 		res.status(500).json({ error: err.stderr || err.message });
 	}
 });
