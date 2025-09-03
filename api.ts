@@ -113,6 +113,7 @@ app.post('/get_subscribes', async (req, res) => {
 			method: 'GET',
 			headers: {
 				"Authorization": `Bearer ${accessToken}`,
+				"Accept": "*/*"
 			},
 		});
 
