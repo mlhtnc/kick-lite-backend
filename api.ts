@@ -43,13 +43,15 @@ app.post('/get_subscribes', async (req, res) => {
 	
 	try {
 		const response = await fetch(KickEventSubscription, {
-			method: 'POST',
+			method: 'GET',
 			headers: {
 				"Authorization": `Bearer ${accessToken}`,
+				"Accept": "*/*"
 			},
 		});
 
-		console.log(response);
+		const text = await response.text();
+		console.log(text);
 
 		if (!response.ok) {
 			throw new Error();
@@ -90,35 +92,6 @@ app.post('/subscribe_chat', async (req, res) => {
 		});
 
 		console.log(response)
-
-		if (!response.ok) {
-			throw new Error();
-		}
-
-		return response.json();
-	} catch (err: any) {
-		console.log(err);
-		res.status(500).json({ error: err.stderr || err.message });
-	}
-});
-
-app.post('/get_subscribes', async (req, res) => {
-	const { accessToken } = req.body;
-	if (!accessToken) {
-		return res.status(400).json({ error: 'Access token is missing' });
-	}
-	
-	try {
-		const response = await fetch(KickEventSubscription, {
-			method: 'GET',
-			headers: {
-				"Authorization": `Bearer ${accessToken}`,
-				"Accept": "application/json"
-			},
-		});
-
-		const text = await response.text();
-		console.log(text);
 
 		if (!response.ok) {
 			throw new Error();
