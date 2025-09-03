@@ -43,10 +43,12 @@ app.post('/subscribe_chat', async (req, res) => {
 	
 	const data = {
 		broadcaster_user_id: userId,
-		events: {
-			name: "chat.message.sent",
-			version: 1
-		},
+		events: [
+			{
+				name: "chat.message.sent",
+				version: 1
+			}
+		],
 		method: "webhook"
 	};
 
