@@ -54,7 +54,8 @@ app.post('/get_subscribes', async (req, res) => {
 			throw new Error();
 		}
 
-		return await response.json();
+		const data = await response.json();
+		return res.json(data);
 	} catch (err: any) {
 		console.log(err);
 		res.status(500).json({ error: err.stderr || err.message });
