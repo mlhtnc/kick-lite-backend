@@ -89,15 +89,13 @@ app.post('/subscribe_chat', async (req, res) => {
 			body: JSON.stringify(data),
 		});
 
-		console.log(response)
-
 		if (!response.ok) {
 			throw new Error();
 		}
 
-		return response.json();
+		const responseJson = await response.json();
+		return res.json(responseJson);
 	} catch (err: any) {
-		console.log(err);
 		res.status(500).json({ error: err.stderr || err.message });
 	}
 });
@@ -111,7 +109,6 @@ app.post('/delete_subscribe', async (req, res) => {
 	const params = new URLSearchParams();
 	params.append("id", id);
 
-
 	try {
 		const response = await fetch(`${KickEventSubscription}?${params.toString()}`, {
 			method: 'DELETE',
@@ -121,15 +118,13 @@ app.post('/delete_subscribe', async (req, res) => {
 			},
 		});
 
-		console.log(response)
-
 		if (!response.ok) {
 			throw new Error();
 		}
 
-		return response.json();
+		const data = await response.json();
+		return res.json(data);
 	} catch (err: any) {
-		console.log(err);
 		res.status(500).json({ error: err.stderr || err.message });
 	}
 });
