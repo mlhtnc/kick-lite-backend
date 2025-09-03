@@ -125,6 +125,8 @@ app.post('/delete_subscribe', async (req, res) => {
 		const data = await response.json();
 		return res.json(data);
 	} catch (err: any) {
+		console.log(err)
+		console.log(err.message);
 		res.status(500).json({ error: err.stderr || err.message });
 	}
 });
