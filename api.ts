@@ -14,6 +14,7 @@ const app = express();
 app.use(bodyParser.json());
 
 const KickBaseURL = "https://kick.com";
+const KickEventSubscription = "https://api.kick.com/public/v1/events/subscriptions";
 
 
 app.post('/get_stream_url', async (req, res) => {
@@ -33,6 +34,54 @@ app.post('/get_stream_url', async (req, res) => {
 		res.status(500).json({ error: err.stderr || err.message });
 	}
 });
+
+app.post('/subscribe_chat', async (req, res) => {
+	const { userId, accessToken } = req.body;
+	if (!userId || !accessToken) {
+		return res.status(400).json({ error: 'User id or access token is missing' });
+	}
+	
+	const data = {
+		broadcaster_user_id: userId,
+		events: {
+			name: "chat.message.sent",
+			version: 1
+		},
+		method: "webhook"
+	};
+
+	try {
+		const response = await fetch(KickEventSubscription, {
+			method: 'POST',
+			headers: {
+				"Authorization": `Bearer ${accessToken}`,
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify(data),
+		});
+
+		console.log(response)
+
+		if (!response.ok) {
+			throw new Error();
+		}
+
+		return response.json();
+	} catch (err: any) {
+		res.status(500).json({ error: err.stderr || err.message });
+	}
+});
+
+
+app.post('/kick_webhook', async (req, res) => {
+	
+	console.log(req.body);
+	
+
+	res.status(200).send();
+});
+
+
 
 const PORT = 5000;
 app.listen(PORT, HOST, () => {
