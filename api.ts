@@ -113,11 +113,12 @@ app.post('/get_subscribes', async (req, res) => {
 			method: 'GET',
 			headers: {
 				"Authorization": `Bearer ${accessToken}`,
-				"Accept": "*/*"
+				"Accept": "application/json"
 			},
 		});
 
-		console.log(response);
+		const text = await response.text();
+		console.log(text);
 
 		if (!response.ok) {
 			throw new Error();
